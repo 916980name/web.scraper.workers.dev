@@ -10,14 +10,14 @@ addEventListener('fetch', event => {
 async function handleRequest(request) {
   const req_auth = request.headers.get("X-CF-AUTH-KEY")
   if (req_auth === null) {
-    return new Response("", { status: 401 });
+    return new Response("Unauthorized", { status: 401 });
   }
   const auth_header = await vault.get("X-CF-AUTH-KEY");
   if (auth_header === null) {
-    return new Response("", { status: 401 });
+    return new Response("Forbidden", { status: 401 });
   }
   if(req_auth !== auth_header) {
-    return new Response("", { status: 401 });
+    return new Response("Authentication Failed", { status: 401 });
   }
 
   const searchParams = new URL(request.url).searchParams
